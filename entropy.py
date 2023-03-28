@@ -3,8 +3,8 @@ import jieba
 import math
 import re
 
-def process(file_name):
-    punctuation = u'[A-Za-z0-9_.!+-=——,$%^，。？、~@#￥%……&*《》<>「」{}【】()/]（）'
+def process(file_name):#数据预处理
+    punctuation = u'[A-Za-z0-9_.!+-=——,$%^，。？、~@#￥%……&*《》<>「」{}【】()/]（）'#定义正则表达式用于删除各种符号
     with open(file_name,'r',encoding='ANSI') as f:
         corpus = f.read()
         corpus = re.sub(punctuation,'',corpus)
@@ -13,13 +13,13 @@ def process(file_name):
         f.close()
     return corpus
 
-def get_unitf(words):
-    unitf_dic = {}
+def get_unitf(words):#统计一元词词频
+    unitf_dic = {}#包括后面用于统计词频的字典在内，key为词，value为词出现次数
     for w in words:
         unitf_dic[w] = unitf_dic.get(w, 0) + 1
     return unitf_dic
 
-def unigram(file_name,flag):
+def unigram(file_name,flag):#计算一元模型信息熵
     corpus = process(file_name)
 
     if flag == 0:
@@ -35,13 +35,13 @@ def unigram(file_name,flag):
     print('unigram一元模型信息熵： ',unientropy)
 
 
-def get_bitf(words):
+def get_bitf(words):#统计二元词词频
     bitf_dic = {}
     for i in range(len(words)-1):
         bitf_dic[(words[i], words[i+1])] = bitf_dic.get((words[i], words[i+1]), 0) + 1
     return bitf_dic
 
-def bigram(file_name, flag):
+def bigram(file_name, flag):#计算二元模型信息熵
     corpus = process(file_name)
 
     if flag == 0:
@@ -60,13 +60,13 @@ def bigram(file_name, flag):
     print('bigram二元模型信息熵： ',bientropy)
 
 
-def get_tritf(words):
+def get_tritf(words):#统计三元词词频
     tritf_dic = {}
     for i in range(len(words)-2):
         tritf_dic[((words[i], words[i+1]), words[i+2])] = tritf_dic.get(((words[i], words[i+1]), words[i+2]), 0) + 1
     return tritf_dic
 
-def trigram(file_name, flag):
+def trigram(file_name, flag):#计算三元模型信息熵
     corpus = process(file_name)
 
     if flag == 0:
